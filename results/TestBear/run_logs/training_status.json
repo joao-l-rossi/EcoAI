@@ -2,22 +2,22 @@
     "BearBehavior": {
         "checkpoints": [
             {
-                "steps": 7199,
-                "file_path": "results\\TestBear\\BearBehavior\\BearBehavior-7199.onnx",
+                "steps": 10163,
+                "file_path": "results\\TestBear\\BearBehavior\\BearBehavior-10163.onnx",
                 "reward": null,
-                "creation_time": 1736603143.3624864,
+                "creation_time": 1736621989.272793,
                 "auxillary_file_paths": [
-                    "results\\TestBear\\BearBehavior\\BearBehavior-7199.pt"
+                    "results\\TestBear\\BearBehavior\\BearBehavior-10163.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 7199,
+            "steps": 10163,
             "file_path": "results\\TestBear\\BearBehavior.onnx",
             "reward": null,
-            "creation_time": 1736603143.3624864,
+            "creation_time": 1736621989.272793,
             "auxillary_file_paths": [
-                "results\\TestBear\\BearBehavior\\BearBehavior-7199.pt"
+                "results\\TestBear\\BearBehavior\\BearBehavior-10163.pt"
             ]
         }
     },
