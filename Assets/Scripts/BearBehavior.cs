@@ -23,20 +23,24 @@ public class BearBehavior : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
+        // Bear's position
         sensor.AddObservation(transform.localPosition);
-        sensor.AddObservation(targetTransform.localPosition);
 
-        }
+        // Relative position of the deer
+        Vector3 relativePosition = targetTransform.localPosition - transform.localPosition;
+        sensor.AddObservation(relativePosition);
+
+        // Bear's rotation and velocity (for more context)
+        sensor.AddObservation(transform.forward);
+    }
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         float moveZ = actions.ContinuousActions[1];
         float moveSpeed = 4f;
 
-        // Calculate movement vector
+        // Calculate movement
         Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
-
-        // Move the bear
         transform.localPosition += movement * Time.deltaTime * moveSpeed;
 
         // Rotate the bear to face the movement direction
@@ -46,16 +50,29 @@ public class BearBehavior : Agent
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
         }
 
-        // Raycast to align the bear with the terrain's surface normal
+        // Align the bear to the terrain
         RaycastHit hit;
         if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 10f))
         {
-            // Align the bear's up vector with the surface normal
             Vector3 terrainNormal = hit.normal;
             Quaternion terrainAlignment = Quaternion.FromToRotation(transform.up, terrainNormal) * transform.rotation;
             transform.rotation = Quaternion.Slerp(transform.rotation, terrainAlignment, Time.deltaTime * 10f);
         }
+
+        // Reward for moving closer to the deer
+        float distanceToDeer = Vector3.Distance(transform.localPosition, targetTransform.localPosition);
+        float previousDistance = Vector3.Distance(transform.localPosition - movement, targetTransform.localPosition);
+
+        if (distanceToDeer < previousDistance)
+        {
+            AddReward(0.1f); // Reward for getting closer
+        }
+        else
+        {
+            AddReward(-0.1f); // Penalize for moving away
+        }
     }
+
 
     /*
     private void UpdateAnimation(float horizontal, float vertical)
@@ -83,7 +100,7 @@ public class BearBehavior : Agent
     {
         if (other.TryGetComponent<DeerBehavior>(out DeerBehavior deer))
         {
-            SetReward(1f);
+            AddReward(10f);
             EndEpisode();
         }
 
