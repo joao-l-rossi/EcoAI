@@ -1,0 +1,29 @@
+{
+    "BearBehavior": {
+        "checkpoints": [
+            {
+                "steps": 124017,
+                "file_path": "results\\TestParametersUpdatedReward1\\BearBehavior\\BearBehavior-124017.onnx",
+                "reward": 103.70967864990234,
+                "creation_time": 1736798562.4531803,
+                "auxillary_file_paths": [
+                    "results\\TestParametersUpdatedReward1\\BearBehavior\\BearBehavior-124017.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 124017,
+            "file_path": "results\\TestParametersUpdatedReward1\\BearBehavior.onnx",
+            "reward": 103.70967864990234,
+            "creation_time": 1736798562.4531803,
+            "auxillary_file_paths": [
+                "results\\TestParametersUpdatedReward1\\BearBehavior\\BearBehavior-124017.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}
