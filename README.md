@@ -27,6 +27,12 @@ This project is a Unity-based simulation where a bear, controlled by Unity ML-Ag
      ```bash
      mlagents-learn ConfigName.yaml --run-id=BearTraining
      ```
+   - You can check the convergence of the training in the panel by opening a different bach window, navigating to the project directory and using the tensorboard command
+     ```bash
+     tensorboard --logdir results\FolderPath
+     ``` 
+![image](https://github.com/user-attachments/assets/448890f7-c5ae-4ea8-9d0e-2c37a4395749)
+
 2. **Inference**:
    - Add the generated bear behavior .onx file to the "Model" field of the Bear and switch "Behavior Type" to Inference.
    - You can also use the BearBehavior-124017.onx file placed in the Scripts folder to test the inference mode.
