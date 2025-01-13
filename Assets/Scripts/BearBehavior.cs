@@ -22,7 +22,6 @@ public class BearBehavior : Agent
         //health = 100f;
         transform.localPosition = offset + new Vector3(-5f, 9f, 0.2f);
         targetTransform.localPosition = new Vector3(Random.Range(-3f, 10f), 9f, Random.Range(-10f, 15f));
-        elapsedTime = 0f;
     }
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -34,7 +33,7 @@ public class BearBehavior : Agent
         sensor.AddObservation(relativePosition);
 
         // Bear's rotation and velocity (for more context)
-       // sensor.AddObservation(transform.forward);
+        //sensor.AddObservation(transform.forward);
 
         // Deer's velocity (direction and speed)
         //sensor.AddObservation(deerRigidbody.linearVelocity);
@@ -47,8 +46,7 @@ public class BearBehavior : Agent
         Vector3 previousBearLocation = transform.localPosition;
         Vector3 previousDeerLocation = targetTransform.localPosition;
 
-        // Updating time
-        elapsedTime += Time.deltaTime;
+        elapsedTime = 0f;
 
         // Calculate movement
         Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
@@ -74,7 +72,12 @@ public class BearBehavior : Agent
         float distanceToDeer = Vector3.Distance(transform.localPosition, targetTransform.localPosition);
         float previousDistance = Vector3.Distance(previousBearLocation, previousDeerLocation);
 
-        AddReward((previousDistance - distanceToDeer));
+        
+        // Updating time
+        elapsedTime += Time.deltaTime;
+
+        AddReward(previousDistance - distanceToDeer - elapsedTime);
+
     }
 
 
@@ -104,7 +107,7 @@ public class BearBehavior : Agent
     {
         if (other.TryGetComponent(out DeerBehavior deer))
         {
-            AddReward(100f - elapsedTime);
+            AddReward(100f);
             Debug.Log("Deer caught by the bear!");
             Debug.Log("Reward: " + GetCumulativeReward());
             EndEpisode();
