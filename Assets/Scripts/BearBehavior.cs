@@ -9,17 +9,20 @@ public class BearBehavior : Agent
     [SerializeField] private Transform targetTransform;
     [SerializeField] float health, maxHealth = 100f; // Health of the bear
     [SerializeField] FloatingBar healthBar;
+    //[SerializeField] private Rigidbody deerRigidbody;
     private Animator animator;              // Animator component
     Vector3 offset = new Vector3(0, 1, 0);
+    private float elapsedTime;
  
 
 
     public override void OnEpisodeBegin()
     {
         healthBar = GetComponentInChildren<FloatingBar>();
-        health =100f;
-        transform.localPosition =  offset + new Vector3(543f, 23f,388f);
-        targetTransform.localPosition =  new Vector3(Random.Range(540f, 550f), 22f, Random.Range(382f, 382f));
+        //health = 100f;
+        transform.localPosition = offset + new Vector3(-5f, 9f, 0.2f);
+        targetTransform.localPosition = new Vector3(Random.Range(-3f, 10f), 9f, Random.Range(-10f, 15f));
+        elapsedTime = 0f;
     }
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -31,13 +34,21 @@ public class BearBehavior : Agent
         sensor.AddObservation(relativePosition);
 
         // Bear's rotation and velocity (for more context)
-        sensor.AddObservation(transform.forward);
+       // sensor.AddObservation(transform.forward);
+
+        // Deer's velocity (direction and speed)
+        //sensor.AddObservation(deerRigidbody.linearVelocity);
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         float moveZ = actions.ContinuousActions[1];
         float moveSpeed = 4f;
+        Vector3 previousBearLocation = transform.localPosition;
+        Vector3 previousDeerLocation = targetTransform.localPosition;
+
+        // Updating time
+        elapsedTime += Time.deltaTime;
 
         // Calculate movement
         Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
@@ -61,16 +72,9 @@ public class BearBehavior : Agent
 
         // Reward for moving closer to the deer
         float distanceToDeer = Vector3.Distance(transform.localPosition, targetTransform.localPosition);
-        float previousDistance = Vector3.Distance(transform.localPosition - movement, targetTransform.localPosition);
+        float previousDistance = Vector3.Distance(previousBearLocation, previousDeerLocation);
 
-        if (distanceToDeer < previousDistance)
-        {
-            AddReward(0.1f); // Reward for getting closer
-        }
-        else
-        {
-            AddReward(-0.1f); // Penalize for moving away
-        }
+        AddReward((previousDistance - distanceToDeer));
     }
 
 
@@ -98,9 +102,11 @@ public class BearBehavior : Agent
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<DeerBehavior>(out DeerBehavior deer))
+        if (other.TryGetComponent(out DeerBehavior deer))
         {
-            AddReward(10f);
+            AddReward(100f - elapsedTime);
+            Debug.Log("Deer caught by the bear!");
+            Debug.Log("Reward: " + GetCumulativeReward());
             EndEpisode();
         }
 
