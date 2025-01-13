@@ -53,4 +53,8 @@ The bear is rewarded or penalized when:
 - Implement multiple agents (e.g. multiple competing, fighting, and reproducing bears) for a more complex ecosystem.
 - Improve the environment look.
 
+  ![image](https://github.com/user-attachments/assets/9832287b-92d4-4e9b-b837-7e5f5a6fe4d8)
+
+
+
 
