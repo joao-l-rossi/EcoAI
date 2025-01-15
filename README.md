@@ -12,7 +12,7 @@ This project is a Unity-based simulation where a bear, controlled by Unity ML-Ag
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/bear-deer-simulation.git
+   git clone https://github.com/joao-l-rossi/EcoAI.git
    ```
 2. Open the project in Unity (recommended version: 2021.3 or later).
 3. Install Unity ML-Agents package if not already installed:
@@ -54,10 +54,12 @@ The bear is rewarded or penalized when:
 
 ## Future Enhancements
 - Add more dynamic behaviors for the deer, such as fleeing in response to the bear's proximity.
-- Create the systems to use food, water, life, and fitness bars.
+- Update Bear animations.
+- Create the systems for food, water, life, and fitness bars.
 - Add other foraging options like grass and fish.
 - Implement multiple agents (e.g. multiple competing, fighting, and reproducing bears) for a more complex ecosystem.
 - Improve the environment look.
+
 
 
 
