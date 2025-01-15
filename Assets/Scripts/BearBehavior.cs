@@ -20,7 +20,7 @@ public class BearBehavior : Agent
     {
         healthBar = GetComponentInChildren<FloatingBar>();
         //health = 100f;
-        transform.localPosition = offset + new Vector3(-5f, 9f, 0.2f);
+        transform.localPosition = offset + new Vector3(Random.Range(-3f, 10f), 9f, Random.Range(-10f, 15f));
         targetTransform.localPosition = new Vector3(Random.Range(-3f, 10f), 9f, Random.Range(-10f, 15f));
     }
     public override void CollectObservations(VectorSensor sensor)
