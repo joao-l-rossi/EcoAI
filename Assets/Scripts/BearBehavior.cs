@@ -2,6 +2,8 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class BearBehavior : Agent 
 {
@@ -40,8 +42,7 @@ public class BearBehavior : Agent
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
-        float moveX = actions.ContinuousActions[0];
-        float moveZ = actions.ContinuousActions[1];
+        int actionIndicator = actions.DiscreteActions[0];
         float moveSpeed = 4f;
         Vector3 previousBearLocation = transform.localPosition;
         Vector3 previousDeerLocation = targetTransform.localPosition;
@@ -49,14 +50,15 @@ public class BearBehavior : Agent
         elapsedTime = 0f;
 
         // Calculate movement
-        Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
-        transform.localPosition += movement * Time.deltaTime * moveSpeed;
+        //Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
+        //transform.localPosition += movement * Time.deltaTime * moveSpeed;
 
-        // Rotate the bear to face the movement direction
-        if (movement.magnitude > 0)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(movement, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+        if(actionIndicator == 0){
+            Debug.Log("Indicator Status: " + actionIndicator.ToString());
+            MoveTowardsDeer(targetTransform.localPosition, moveSpeed);
+        }
+        if(actionIndicator == 1){
+        
         }
 
         // Align the bear to the terrain
@@ -91,16 +93,40 @@ public class BearBehavior : Agent
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
 
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        bool chaseDeerKey = Input.GetKeyDown(KeyCode.W);
+        bool IddleKey = Input.GetKeyDown(KeyCode.Q);
 
-        continuousActions[0] = horizontal;
-        continuousActions[1] = vertical;
+        if (chaseDeerKey){
+            discreteActions = new ActionSegment<int>(new int[] { 0 });
+        }
+        else if (IddleKey){
+            discreteActions = new ActionSegment<int>(new int[] { 1 });
+        }
 
        // UpdateAnimation(horizontal, vertical);
-    }  
+    } 
+
+
+    private void MoveTowardsDeer(Vector3 deerPosition, float moveSpeed)
+    {
+        // Calculate direction to the deer
+        Vector3 direction = (deerPosition - transform.position).normalized;
+
+        // Calculate the new position using MoveTowards
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, deerPosition, moveSpeed * Time.deltaTime); // Adjust speed as needed
+
+        // Update the bear's position
+        transform.position = newPosition;
+
+        // Rotate the bear to face the deer
+        if (direction.magnitude > 0)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Adjust rotation speed as needed
+        }
+    }
     
     
     private void OnTriggerEnter(Collider other)
