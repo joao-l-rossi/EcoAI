@@ -41,7 +41,8 @@ public class BearBehavior : Agent
         //sensor.AddObservation(deerRigidbody.linearVelocity);
     }
     public override void OnActionReceived(ActionBuffers actions)
-    {
+    {   
+        Debug.Log("Action: " + actions.DiscreteActions[0]);
         int actionIndicator = actions.DiscreteActions[0];
         float moveSpeed = 4f;
         Vector3 previousBearLocation = transform.localPosition;
@@ -52,12 +53,12 @@ public class BearBehavior : Agent
         // Calculate movement
         //Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
         //transform.localPosition += movement * Time.deltaTime * moveSpeed;
-
+        //Debug.Log("Indicator Status: " + actionIndicator.ToString());
         if(actionIndicator == 0){
-            Debug.Log("Indicator Status: " + actionIndicator.ToString());
             MoveTowardsDeer(targetTransform.localPosition, moveSpeed);
         }
         if(actionIndicator == 1){
+            MoveTowardsDeer(transform.localPosition, moveSpeed);
         
         }
 
@@ -95,18 +96,15 @@ public class BearBehavior : Agent
     {
         ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
 
-        bool chaseDeerKey = Input.GetKeyDown(KeyCode.W);
-        bool IddleKey = Input.GetKeyDown(KeyCode.Q);
+        // Default to idle action
+        discreteActions[0] = 1; // Idle action
 
-        if (chaseDeerKey){
-            discreteActions = new ActionSegment<int>(new int[] { 0 });
+        // Override if specific keys are held down
+        if (Input.GetKey(KeyCode.W))
+        {
+            discreteActions[0] = 0; // Chase deer action
         }
-        else if (IddleKey){
-            discreteActions = new ActionSegment<int>(new int[] { 1 });
-        }
-
-       // UpdateAnimation(horizontal, vertical);
-    } 
+    }
 
 
     private void MoveTowardsDeer(Vector3 deerPosition, float moveSpeed)
