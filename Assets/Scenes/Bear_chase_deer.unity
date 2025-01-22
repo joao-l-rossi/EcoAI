@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972b1cf29f2ba884882af30990cc5861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  slider: {fileID: 228349394}
 --- !u!114 &228349394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1142,7 +1142,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.2700377, y: -9.789969}
+  m_AnchoredPosition: {x: 2.4, y: -9.789969}
   m_SizeDelta: {x: 150.4, y: 29.31}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &557977978
@@ -1157,7 +1157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972b1cf29f2ba884882af30990cc5861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  slider: {fileID: 557977979}
 --- !u!114 &557977979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1530,7 +1530,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -68.5, y: -7.3}
+  m_AnchoredPosition: {x: -67.8, y: -7.3}
   m_SizeDelta: {x: 23.46, y: 18.79}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &757400676
@@ -1634,14 +1634,14 @@ RectTransform:
   m_GameObject: {fileID: 830747408}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.00076778233}
-  m_LocalScale: {x: 0.2, y: 0.17, z: 0.17}
+  m_LocalScale: {x: 0.22, y: 0.19, z: 0.19}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 471481118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -68.96, y: 34.7}
+  m_AnchoredPosition: {x: -71.4, y: 34.7}
   m_SizeDelta: {x: 99.22, y: 106.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &830747410
@@ -2188,7 +2188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972b1cf29f2ba884882af30990cc5861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  slider: {fileID: 1773930827}
 --- !u!114 &1773930827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2378,7 +2378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972b1cf29f2ba884882af30990cc5861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  slider: {fileID: 1973643625}
 --- !u!1 &2050493844
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,7 +2488,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 1
+  m_BehaviorType: 0
   m_BehaviorName: BearBehavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -2573,11 +2573,11 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 500
+  MaxStep: 2000
   targetTransform: {fileID: 133091725}
-  health: 0
-  maxHealth: 100
-  healthBar: {fileID: 1973643626}
+  hunger: 0
+  maxHunger: 100
+  hungerBar: {fileID: 0}
 --- !u!1 &2103025778
 GameObject:
   m_ObjectHideFlags: 0

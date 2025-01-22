@@ -9,8 +9,10 @@ public class BearBehavior : Agent
 {
 
     [SerializeField] private Transform targetTransform;
-    [SerializeField] float health, maxHealth = 100f; // Health of the bear
-    [SerializeField] FloatingBar healthBar;
+   // [SerializeField] float health, maxHealth = 100f; // Health of the bear
+    [SerializeField] float hunger, maxHunger = 100f;
+    //[SerializeField] FloatingBar healthBar;
+    [SerializeField] FloatingBar hungerBar;
     //[SerializeField] private Rigidbody deerRigidbody;
     private Animator animator;              // Animator component
     Vector3 offset = new Vector3(0, 1, 0);
@@ -20,10 +22,11 @@ public class BearBehavior : Agent
 
     public override void OnEpisodeBegin()
     {
-        healthBar = GetComponentInChildren<FloatingBar>();
+        hungerBar = transform.Find("Canvas/HungerBar").GetComponent<FloatingBar>();
         //health = 100f;
+        hunger = 100f;
         transform.localPosition = offset + new Vector3(Random.Range(-3f, 10f), 9f, Random.Range(-10f, 15f));
-        targetTransform.localPosition = new Vector3(Random.Range(-3f, 10f), 9f, Random.Range(-10f, 15f));
+        targetTransform.localPosition = new Vector3(Random.Range(-3f, 10f), 8f, Random.Range(-20f, 25f));
     }
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -81,6 +84,8 @@ public class BearBehavior : Agent
 
         AddReward(previousDistance - distanceToDeer - elapsedTime);
 
+        UpdateHunger(Time.deltaTime);
+
     }
 
 
@@ -104,6 +109,9 @@ public class BearBehavior : Agent
         {
             discreteActions[0] = 0; // Chase deer action
         }
+
+        // Updating time
+       // UpdateHunger(Time.deltaTime);
     }
 
 
@@ -137,5 +145,16 @@ public class BearBehavior : Agent
             EndEpisode();
         }
 
+    }
+
+    private void UpdateHunger(float deltaTime)
+    {
+        hunger -= deltaTime *10f;
+        hungerBar.UpdateBar(hunger, maxHunger);
+        if (hunger <= 0)
+        {
+        EndEpisode();
+        AddReward(-100f);
+        }
     }
 }
