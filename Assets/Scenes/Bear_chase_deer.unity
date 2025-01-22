@@ -2486,9 +2486,9 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: bfe4e74321d6319439999c003b7d5f98, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 2
   m_BehaviorName: BearBehavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -2578,6 +2578,7 @@ MonoBehaviour:
   hunger: 0
   maxHunger: 100
   hungerBar: {fileID: 0}
+  currentAction: 0
 --- !u!1 &2103025778
 GameObject:
   m_ObjectHideFlags: 0

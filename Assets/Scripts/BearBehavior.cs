@@ -17,12 +17,14 @@ public class BearBehavior : Agent
     private Animator animator;              // Animator component
     Vector3 offset = new Vector3(0, 1, 0);
     private float elapsedTime;
+    public int currentAction;
  
 
 
     public override void OnEpisodeBegin()
     {
         hungerBar = transform.Find("Canvas/HungerBar").GetComponent<FloatingBar>();
+        currentAction = 0;
         //health = 100f;
         hunger = 100f;
         transform.localPosition = offset + new Vector3(Random.Range(-3f, 10f), 9f, Random.Range(-10f, 15f));
@@ -45,23 +47,24 @@ public class BearBehavior : Agent
     }
     public override void OnActionReceived(ActionBuffers actions)
     {   
-        Debug.Log("Action: " + actions.DiscreteActions[0]);
+        // Penalizing changing actions to avoid ineficient behavior switching
+        if(currentAction != actions.DiscreteActions[0]){
+            AddReward(-10f);
+           // Debug.Log("Action changed Reward: " + GetCumulativeReward());
+        }
+        currentAction = actions.DiscreteActions[0];
+        
         int actionIndicator = actions.DiscreteActions[0];
         float moveSpeed = 4f;
         Vector3 previousBearLocation = transform.localPosition;
         Vector3 previousDeerLocation = targetTransform.localPosition;
-
         elapsedTime = 0f;
 
-        // Calculate movement
-        //Vector3 movement = new Vector3(moveX, 0, moveZ).normalized;
-        //transform.localPosition += movement * Time.deltaTime * moveSpeed;
-        //Debug.Log("Indicator Status: " + actionIndicator.ToString());
         if(actionIndicator == 0){
             MoveTowardsDeer(targetTransform.localPosition, moveSpeed);
         }
         if(actionIndicator == 1){
-            MoveTowardsDeer(transform.localPosition, moveSpeed);
+            //MoveTowardsDeer(transform.localPosition, moveSpeed);
         
         }
 
@@ -141,7 +144,7 @@ public class BearBehavior : Agent
         {
             AddReward(100f);
             Debug.Log("Deer caught by the bear!");
-            Debug.Log("Reward: " + GetCumulativeReward());
+            Debug.Log("Final Reward: " + GetCumulativeReward());
             EndEpisode();
         }
 
@@ -153,8 +156,10 @@ public class BearBehavior : Agent
         hungerBar.UpdateBar(hunger, maxHunger);
         if (hunger <= 0)
         {
-        EndEpisode();
-        AddReward(-100f);
+            AddReward(-100f);
+            Debug.Log("The bear starved! Final Reward: " + GetCumulativeReward());
+            EndEpisode();
+        
         }
     }
 }
