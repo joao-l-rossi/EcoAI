@@ -4,6 +4,7 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class BearBehavior : Agent 
 {
@@ -123,19 +124,34 @@ public class BearBehavior : Agent
         // Calculate direction to the deer
         Vector3 direction = (deerPosition - transform.position).normalized;
 
+        // Perform a raycast to detect obstacles in the direction of movement
+        RaycastHit hit;
+        float obstacleDetectionRange = 2f; // Adjust based on the size of obstacles
+
+        if (Physics.Raycast(transform.position + Vector3.up, direction, out hit, obstacleDetectionRange))
+        {
+            if (hit.collider.CompareTag("Terrain")) // Ensure obstacles are tagged appropriately
+            {
+                // Calculate a direction to avoid the obstacle
+                Vector3 avoidanceDirection = Vector3.Cross(Vector3.up, hit.normal).normalized;
+                direction += avoidanceDirection; // Adjust the direction slightly
+            }
+        }
+
         // Calculate the new position using MoveTowards
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, deerPosition, moveSpeed * Time.deltaTime); // Adjust speed as needed
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, transform.position + direction, moveSpeed * Time.deltaTime);
 
         // Update the bear's position
         transform.position = newPosition;
 
-        // Rotate the bear to face the deer
+        // Rotate the bear to face the direction of movement
         if (direction.magnitude > 0)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Adjust rotation speed as needed
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
     }
+
     
     
     private void OnTriggerEnter(Collider other)
