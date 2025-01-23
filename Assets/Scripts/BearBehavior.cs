@@ -61,8 +61,11 @@ public class BearBehavior : Agent
         Vector3 previousDeerLocation = targetTransform.localPosition;
         elapsedTime = 0f;
 
-        if(actionIndicator == 0){
-            MoveTowardsDeer(targetTransform.localPosition, moveSpeed);
+        
+        Transform nearestDeer = FindNearestDeer();
+        
+        if(actionIndicator == 0 && nearestDeer != null){
+            MoveTowardsDeer(nearestDeer.position, moveSpeed);
         }
         if(actionIndicator == 1){
             //MoveTowardsDeer(transform.localPosition, moveSpeed);
@@ -152,16 +155,39 @@ public class BearBehavior : Agent
         }
     }
 
+    private Transform FindNearestDeer()
+    {
+        GameObject[] allDeers = GameObject.FindGameObjectsWithTag("Deer"); // Ensure all deer are tagged as "Deer"
+        Transform nearestDeer = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (GameObject deer in allDeers)
+        {
+            float distance = Vector3.Distance(transform.position, deer.transform.position);
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestDeer = deer.transform;
+            }
+        }
+
+        return nearestDeer;;
+    }
+
     
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out DeerBehavior deer))
         {
-            AddReward(100f);
+            float foodReward = Mathf.Min(50f,maxHunger - hunger); // Reward based on remaining hunger
+            hunger += foodReward;
+            AddReward(foodReward*10f);
             Debug.Log("Deer caught by the bear!");
-            Debug.Log("Final Reward: " + GetCumulativeReward());
-            EndEpisode();
+            Debug.Log("Reward: " + GetCumulativeReward());
+            hungerBar.UpdateBar(hunger, maxHunger);
+            deer.RespawnDeer();
         }
 
     }

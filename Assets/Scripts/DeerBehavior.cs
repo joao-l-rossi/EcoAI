@@ -1,13 +1,15 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeerBehavior : MonoBehaviour
 {
+    [SerializeField] public Transform bearTransform; // Reference to the bear's transform
     public float RunSpeed = 2f;             // Running speed of the deer
     public float idleTime = 2f;            // Time the deer idles
     public float RunTime = 3f;             // Time the deer runs
-    public float terrainSize = 50f;        // Size of the terrain to limit movement
-    public float maxDistance = 5f;         // Define the maximum distance the deer can run
+    public float terrainSize = 1000f;        // Size of the terrain to limit movement
+    public float maxDistance = 1000f;         // Define the maximum distance the deer can run
     private Animator animator;             // Animator component
     private Vector3 targetPosition;        // Deer's random target position
 
@@ -15,6 +17,14 @@ public class DeerBehavior : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         StartCoroutine(deerRoutine());
+    }
+
+    
+    void Update()
+    {
+        if(Vector3.Distance(transform.position, bearTransform.transform.position)<0.5f){
+            RespawnDeer();
+        }
     }
 
     private IEnumerator deerRoutine()
@@ -93,5 +103,20 @@ public class DeerBehavior : MonoBehaviour
             Quaternion toRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
         }
+    }
+
+    public void RespawnDeer()
+    {
+        // Generate a new random position
+        Vector3 newPosition = GetRandomPosition();
+
+        // Update the deer's position
+        transform.position = newPosition;
+
+        // Optionally reset animations or other states
+        animator.SetBool("DeerRun", false);
+        targetPosition = newPosition; // Reset the target position
+
+        Debug.Log("Deer respawned at: " + newPosition);
     }
 }

@@ -283,9 +283,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e49f06d028547246939d6f976c25731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bearTransform: {fileID: 2077502940}
   RunSpeed: 4
   idleTime: 2
   RunTime: 3
+  minimumRespawDistance: 30
   terrainSize: 50
   maxDistance: 10
 --- !u!4 &133091725 stripped
@@ -2064,7 +2066,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6244460442829132516, guid: d8b100b30dc3e9340addad9ac2bb7e21, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Deer
       objectReference: {fileID: 0}
     - target: {fileID: 7968407583351251102, guid: d8b100b30dc3e9340addad9ac2bb7e21, type: 3}
       propertyPath: m_LocalScale.x
