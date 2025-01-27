@@ -69,6 +69,8 @@ public class DeerBehavior : MonoBehaviour
             Vector3 terrainPosition = terrain.transform.position;
             Vector3 terrainSize = terrain.terrainData.size;
 
+            Debug.Log("Terrain Position: " + terrainSize);
+
             newPosition.x = Mathf.Clamp(newPosition.x, terrainPosition.x, terrainPosition.x + terrainSize.x);
             newPosition.z = Mathf.Clamp(newPosition.z, terrainPosition.z, terrainPosition.z + terrainSize.z);
 

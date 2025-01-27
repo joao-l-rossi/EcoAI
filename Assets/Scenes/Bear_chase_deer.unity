@@ -2902,7 +2902,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 2000
+  MaxStep: 10000
   targetTransform: {fileID: 133091725}
   hunger: 0
   maxHunger: 100
