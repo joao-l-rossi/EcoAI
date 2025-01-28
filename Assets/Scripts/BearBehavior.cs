@@ -194,7 +194,7 @@ public class BearBehavior : Agent
 
     private void UpdateHunger(float deltaTime)
     {
-        hunger -= deltaTime *10f;
+        hunger -= deltaTime *5f;
         hungerBar.UpdateBar(hunger, maxHunger);
         if (hunger <= 0)
         {

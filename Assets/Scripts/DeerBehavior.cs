@@ -8,8 +8,9 @@ public class DeerBehavior : MonoBehaviour
     public float RunSpeed = 2f;             // Running speed of the deer
     public float idleTime = 2f;            // Time the deer idles
     public float RunTime = 3f;             // Time the deer runs
-    public float terrainSize = 1000f;        // Size of the terrain to limit movement
-    public float maxDistance = 1000f;         // Define the maximum distance the deer can run
+    public float terrainSize;        // Size of the terrain to limit movement
+    public float spawnDistance;         // Define the spawn distance
+    public float runDistance;           // Define the maximum distance the deer can run
     private Animator animator;             // Animator component
     private Vector3 targetPosition;        // Deer's random target position
 
@@ -37,7 +38,7 @@ public class DeerBehavior : MonoBehaviour
             yield return new WaitForSeconds(idleTime);
 
             // Run Phase
-            targetPosition = GetRandomPosition();
+            targetPosition = GetRandomPosition(runDistance);
             animator.SetBool("DeerRun", true);
             //Debug.Log("Set DeerRun to true (Run Phase)");
 
@@ -53,13 +54,13 @@ public class DeerBehavior : MonoBehaviour
         }
     }
 
-    private Vector3 GetRandomPosition()
+    private Vector3 GetRandomPosition(float positionDistance)
     {
         if (Terrain.activeTerrain != null)
         {
             // Generate a random offset within the maximum distance
-            float offsetX = Random.Range(-maxDistance, maxDistance);
-            float offsetZ = Random.Range(-maxDistance, maxDistance);
+            float offsetX = Random.Range(-positionDistance, positionDistance);
+            float offsetZ = Random.Range(-positionDistance, positionDistance);
 
             // Calculate the new position
             Vector3 newPosition = transform.position + new Vector3(offsetX, 0, offsetZ);
@@ -69,10 +70,10 @@ public class DeerBehavior : MonoBehaviour
             Vector3 terrainPosition = terrain.transform.position;
             Vector3 terrainSize = terrain.terrainData.size;
 
-            Debug.Log("Terrain Position: " + terrainSize);
-
             newPosition.x = Mathf.Clamp(newPosition.x, terrainPosition.x, terrainPosition.x + terrainSize.x);
             newPosition.z = Mathf.Clamp(newPosition.z, terrainPosition.z, terrainPosition.z + terrainSize.z);
+
+            Debug.Log("New Position: " + newPosition);
 
             // Get the terrain height at the new position
             float y = terrain.SampleHeight(newPosition) + terrain.transform.position.y;
@@ -110,7 +111,7 @@ public class DeerBehavior : MonoBehaviour
     public void RespawnDeer()
     {
         // Generate a new random position
-        Vector3 newPosition = GetRandomPosition();
+        Vector3 newPosition = GetRandomPosition(spawnDistance);
 
         // Update the deer's position
         transform.position = newPosition;
